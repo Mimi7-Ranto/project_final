@@ -36,6 +36,12 @@ $objets = getObjets($categorie_id);
             color: red;
             font-weight: bold;
         }
+        .card-img-top {
+            max-height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
     </style>
 </head>
 <body>
@@ -97,8 +103,13 @@ $objets = getObjets($categorie_id);
             </div>
         <?php else: ?>
             <?php foreach ($objets as $obj): ?>
+                <?php
+                $img = getFirstImage($obj['id_objet']);
+                $img_path = $img ? "../assets/image/" . htmlspecialchars($img) : "../assets/image/imagepeinture_leonard_de_vinci_cree_par_bing_dall_e_3_by_fatalisemh4_dgihabx_6874ca5326843.jpg";
+                ?>
                 <div class="col-md-4">
                     <div class="card shadow-sm">
+                        <img src="<?= $img_path ?>" alt="Image de l'objet" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($obj['nom_objet']) ?></h5>
                             <p class="card-text">

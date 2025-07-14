@@ -240,5 +240,15 @@ function uploadImage($file, $uploadDir = '../assets/image/', $maxSize = 2 * 1024
     return ['success' => true, 'filename' => $newName];
 }
 
+function getFirstImage($id_objet) {
+    $sql = sprintf("SELECT nom_image FROM emprunt_image WHERE id_objet = %d ORDER BY id_image ASC LIMIT 1", $id_objet);
+    $result = mysqli_query(dbconnect(), $sql);
+    if ($row = mysqli_fetch_assoc($result)) {
+        return $row['nom_image'];
+    }
+    return null;
+}
+
+
 
 ?>

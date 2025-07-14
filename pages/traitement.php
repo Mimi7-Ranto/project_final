@@ -107,7 +107,7 @@ if (isset($_POST['obj'], $_POST['cat'], $_FILES['sary'])) {
     $id_membre = $_SESSION['id_membre'];
 
 
-    $id_objet = insert_new_object($nom, $id_membre, $id_cat);
+    insert_new_object($nom, $id_membre, $id_cat);
 
     if ($id_objet) {
     
