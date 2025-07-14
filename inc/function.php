@@ -108,6 +108,13 @@ function insert_new_object($nom,$id_membre,$id_cat){
     $sql = sprintf($sql,$nom,$id_membre,$id_cat);
        $result = mysqli_query(dbconnect(), $sql);
 }
+
+function insert_img($nom,$id_object){
+    $sql  = "INSERT INTO emprunt_image (id_object,nom_image)
+    VALUES ('%s','%s')";
+$sql = sprintf($sql,$nom,$id_object);
+$result = mysqli_query(dbconnect(), $sql);
+}
 /*function emprunterObjet($id_objet, $id_membre) {
     
     $sql = sprintf("INSERT INTO emprunt_emprunt (id_objet, id_membre, date_emprunt) VALUES (%d, %d, NOW())",
@@ -133,6 +140,7 @@ function getImagesObjet($id_objet) {
     }
     return $images;
 }*/
+
 
 function getObjetById($id_objet) {
     $sql = "SELECT o.*, c.nom_categorie, m.nom AS proprietaire 
@@ -189,6 +197,37 @@ function getObjetsParMembreParCategorie($id_membre) {
     return $objets;
 }
 
+
+
+function uploadImage($file, $uploadDir = '../assets/image/', $maxSize = 2 * 1024 * 1024, $allowedMimeTypes = ['image/jpeg', 'image/png']) {
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['error' => 'Erreur lors de l’upload : ' . $file['error']];
+    }
+
+    if ($file['size'] > $maxSize) {
+        return ['error' => 'Le fichier est trop volumineux.'];
+    }
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+
+    if (!in_array($mime, $allowedMimeTypes)) {
+        return ['error' => 'Type de fichier non autorisé : ' . $mime];
+    }
+
+    $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $newName = $originalName . '_' . uniqid() . '.' . $extension;
+
+    $destination = $uploadDir . $newName;
+
+    if (!move_uploaded_file($file['tmp_name'], $destination)) {
+        return ['error' => 'Échec du déplacement du fichier.'];
+    }
+
+    return ['success' => true, 'filename' => $newName];
+}
 
 
 ?>

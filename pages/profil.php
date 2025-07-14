@@ -3,7 +3,11 @@ session_start();
 include("../inc/function.php");
 $email = $_SESSION['email'];
 $infos = get_info($email);
+
 $_SESSION['id_membre'] = $infos['id_membre'];
+
+ $infos['id_membre'] = $_SESSION['id_membre'] ;
+>>>>>>> 1e74d2f (voila)
 $categories = get_categorie();
 $mesObjets = getObjetsParMembreParCategorie($infos['id_membre']);
 

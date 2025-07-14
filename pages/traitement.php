@@ -32,44 +32,23 @@ if(isset($_POST['email']) && isset($_POST['mdp'])){
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])) {
+    $result = uploadImage($_FILES['fichier']);
 
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])){
-    echo 'mety' ;
-
-$uploadDir = '../assets/image/';
-$maxSize = 2 * 1024 * 1024 ;
-$allowedMimeTypes = ['image/jpeg', 'image/png'];
-
- if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])) { 
-    $file = $_FILES['fichier']; 
-if ($file['error'] !== UPLOAD_ERR_OK) { 
-die('Erreur lors de l’upload : ' . $file['error']); 
-    } 
-
-if ($file['size'] > $maxSize) { 
-die('Le fichier est trop volumineux.');
+    if (isset($result['error'])) {
+        die($result['error']);
+    } else {
+        // $result['filename'] contient le nom du fichier uploadé
+        $email = $_SESSION['email'];
+        insert_pdp($result['filename'], $email);
+        echo 'Upload réussi !';
+    }
 }
 
-$finfo = finfo_open(FILEINFO_MIME_TYPE); 
-    $mime = finfo_file($finfo, $file['tmp_name']); 
-    finfo_close($finfo); 
-if (!in_array($mime, $allowedMimeTypes)) { 
-die('Type de fichier non autorisé : ' . $mime); 
-    } 
-
-    $originalName = pathinfo($file['name'], PATHINFO_FILENAME); 
-$extension = pathinfo($file['name'], PATHINFO_EXTENSION); 
-    $newName = $originalName . '_' . uniqid() . '.' . $extension; 
-    $email =  $_SESSION['email'];
-    insert_pdp($newName , $email);
-header('Location:profil.php?succes=1');
-
- }
-}
-
-if(isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])){
+if(isset($_POST['obj']) && isset($_POST['cat']) && isset($_FILES['fichier'])){
     $nom = $_POST['obj'];
-    $id_cat = 
-    insert_new_object();
+    $id_cat = $_POST['cat'];
+    $_SESSION['id_membre'] = $id_membre;
+        insert_new_object($nom,$id_membre,$id_cat);
 }
 ?>
