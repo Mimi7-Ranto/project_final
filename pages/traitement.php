@@ -28,6 +28,7 @@ if (isset($_POST['email']) && isset($_POST['mdp']) && !isset($_POST['action'])) 
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])) {
+
     $uploadDir = '../assets/image/';
     $maxSize = 2 * 1024 * 1024;
     $allowedMimeTypes = ['image/jpeg', 'image/png'];
@@ -88,5 +89,50 @@ if (isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])) {
     $nom = $_POST['obj'];
     $id_cat = $_POST['cat'];
   
+    $result = uploadImage($_FILES['fichier']);
+
+    if (isset($result['error'])) {
+        die($result['error']);
+    } else {
+        
+        $email = $_SESSION['email'];
+        insert_pdp($result['filename'], $email);
+        echo 'Upload réussi !';
+    }
 }
+
+if (isset($_POST['obj'], $_POST['cat'], $_FILES['fichier'])) {
+    $nom = $_POST['obj'];
+    $id_cat = $_POST['cat'];
+    $id_membre = $_SESSION['id_membre'];
+
+
+    $id_objet = insert_new_object($nom, $id_membre, $id_cat);
+
+    if ($id_objet) {
+    
+        foreach ($_FILES['fichier']['tmp_name'] as $index => $tmp_name) {
+            $file = [
+                'name'     => $_FILES['fichier']['name'][$index],
+                'type'     => $_FILES['fichier']['type'][$index],
+                'tmp_name' => $tmp_name,
+                'error'    => $_FILES['fichier']['error'][$index],
+                'size'     => $_FILES['fichier']['size'][$index],
+            ];
+
+            $upload = uploadImage($file);
+
+            if (isset($upload['success'])) {
+                $nom_image = $upload['filename'];
+               insert_img($nom_image,$id_objet);
+            } else {
+                echo "<p class='text-danger'>Erreur image : {$upload['error']}</p>";
+            }
+        }
+        header('Location: liste.php');
+        exit;
+    }
+
+}
+
 ?>
