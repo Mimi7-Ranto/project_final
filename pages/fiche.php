@@ -1,6 +1,7 @@
 <?php
 session_start();
 include("../inc/function.php");
+$mes_emprunts = getEmpruntsActuels($_SESSION['id_membre']);
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo "Objet invalide.";
@@ -125,6 +126,8 @@ if (!$objet) {
             <?php endif; ?>
         </div>
     </div>
+
+    
 
 </body>
 

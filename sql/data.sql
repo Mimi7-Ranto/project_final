@@ -124,3 +124,7 @@ UPDATE emprunt_emprunt SET date_retour = '2025-07-20' WHERE id_emprunt = 7;
 UPDATE emprunt_emprunt SET date_retour = '2025-07-21' WHERE id_emprunt = 8;
 UPDATE emprunt_emprunt SET date_retour = '2025-07-25' WHERE id_emprunt = 9;
 UPDATE emprunt_emprunt SET date_retour = '2025-07-30' WHERE id_emprunt = 10;
+
+ALTER TABLE emprunt_objet
+ADD COLUMN etat ENUM('ok', 'abime') NOT NULL DEFAULT 'ok';
+

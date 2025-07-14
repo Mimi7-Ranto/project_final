@@ -6,9 +6,11 @@ $infos = get_info($email);
 
 $_SESSION['id_membre'] = $infos['id_membre'];
 
- $infos['id_membre'] = $_SESSION['id_membre'] ;
+$infos['id_membre'] = $_SESSION['id_membre'] ;
 $categories = get_categorie();
 $mesObjets = getObjetsParMembreParCategorie($infos['id_membre']);
+$mes_emprunts = getEmpruntsActuels($_SESSION['id_membre']);
+
 
 ?>
 
@@ -160,6 +162,54 @@ $mesObjets = getObjetsParMembreParCategorie($infos['id_membre']);
             </div>
         </div>
     </div>
+
+
+
+
+<hr>
+
+
+   <div>
+    <h4>Mes emprunts en cours</h4>
+
+    <?php if (empty($mes_emprunts)): ?>
+        <p>Vous n'avez aucun emprunt en cours.</p>
+    <?php else: ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Objet</th>
+                    <th>Date d'emprunt</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($mes_emprunts as $emprunt): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($emprunt['nom_objet']) ?></td>
+                        <td><?= htmlspecialchars($emprunt['date_emprunt']) ?></td>
+                        <td>
+                            <form action="retourner.php?id=<?= (int)$emprunt['id_objet'] ?>" method="post" class="d-inline">
+                                <input type="hidden" name="id_emprunt" value="<?= (int)$emprunt['id_emprunt'] ?>">
+
+                                <label for="etat_<?= (int)$emprunt['id_emprunt'] ?>" class="form-label">État :</label>
+                                <select name="etat" id="etat_<?= (int)$emprunt['id_emprunt'] ?>" class="form-select d-inline w-auto" required>
+                                    <option value="ok">OK</option>
+                                    <option value="abime">Abîmé</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-sm btn-primary mt-2">Retourner</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>
+
+
+
 </body>
 
 </html>

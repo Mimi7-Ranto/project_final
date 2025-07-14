@@ -8,7 +8,8 @@
       <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            background: #f2f4f8;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            
         }
         .form-container {
             max-width: 600px;
@@ -17,6 +18,7 @@
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 15%;
         }
     </style>
 </head>
@@ -24,7 +26,7 @@
 
 <div class="container">
     <div class="form-container">
-        <h2 class="text-center mb-4">📝 Login</h2>
+        <h2 class="text-center mb-4">Login</h2>
 
         <form action="traitement.php" method="POST" enctype="multipart/form-data">
          

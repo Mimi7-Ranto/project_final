@@ -8,7 +8,8 @@
       <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            background: #f2f4f8;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+
         }
         .form-container {
             max-width: 600px;
@@ -24,7 +25,7 @@
 
 <div class="container">
     <div class="form-container">
-        <h2 class="text-center mb-4">📝 Créer un compte</h2>
+        <h2 class="text-center mb-4">Créer un compte</h2>
 
         <form action="traitement.php" method="POST" enctype="multipart/form-data">
             <div class="mb-3">

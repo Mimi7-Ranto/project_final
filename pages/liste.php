@@ -11,7 +11,15 @@ $infos = get_info($email);
 $categories = getCategories();
 $categorie_id = isset($_GET['categorie']) ? (int) $_GET['categorie'] : null;
 $objets = getObjets($categorie_id);
+$nb_ok = count_objets_bon_etat();
+$nb_abime = count_objets_abimes();
 ?>
+
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -71,6 +79,15 @@ $objets = getObjets($categorie_id);
     </div>
 </nav>
 
+<div class="container mt-4">
+          <h5 class="card-title">Objets en bon état : <?= $nb_ok ?></h5>
+
+    
+          <h5 class="card-title">Objets abîmés : <?= $nb_abime ?></h5>
+    
+    
+    </div>
+
 <div class="container mt-5">
 
     <?php if (isset($_GET['succes'])): ?>
@@ -81,7 +98,7 @@ $objets = getObjets($categorie_id);
 
     <h1 class="mb-4 text-center">Liste des objets</h1>
 
-    <!-- Filtrage par catégorie -->
+ 
     <form method="GET" class="row g-3 mb-4">
         <div class="col-md-6">
             <select name="categorie" class="form-select">

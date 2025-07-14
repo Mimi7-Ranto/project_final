@@ -241,6 +241,54 @@ function getFirstImage($id_objet) {
     return null;
 }
 
+function getEmpruntsActuels($id_membre) {
+    $sql = "SELECT e.id_emprunt, o.nom_objet, e.date_emprunt
+            FROM emprunt_emprunt e
+            JOIN emprunt_objet o ON o.id_objet = e.id_objet
+            WHERE e.id_membre = $id_membre AND e.date_retour > NOW()";
+
+    $result = mysqli_query(dbconnect(), $sql);
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+function getIdObjetByName($nom_objet) {
+    $conn = dbconnect();
+    $nom_esc = mysqli_real_escape_string($conn, $nom_objet);
+    $sql = "SELECT id_objet FROM emprunt_objet WHERE nom_objet = '$nom_esc' LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return (int)$row['id_objet'];
+    }
+    return null; 
+}
+
+function count_objets_bon_etat() {
+    $conn = dbconnect();
+    $sql = "SELECT COUNT(*) AS total FROM emprunt_objet WHERE etat = 'ok'";
+    $result = mysqli_query($conn, $sql);
+    if ($result && $row = mysqli_fetch_assoc($result)) {
+        return (int)$row['total'];
+    }
+    return 0;
+}
+
+function count_objets_abimes() {
+    $conn = dbconnect();
+    $sql = "SELECT COUNT(*) AS total FROM emprunt_objet WHERE etat = 'abime'";
+    $result = mysqli_query($conn, $sql);
+    if ($result && $row = mysqli_fetch_assoc($result)) {
+        return (int)$row['total'];
+    }
+    return 0;
+}
+
+
+
 
 
 ?>
