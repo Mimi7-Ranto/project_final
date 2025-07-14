@@ -32,6 +32,10 @@ if (!$objet) {
             margin-bottom: 15px;
         }
 
+        body {
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        }
+
         .thumb {
             width: 100px;
             height: auto;

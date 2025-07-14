@@ -22,7 +22,9 @@ $objets = getObjets($categorie_id);
     <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            background: #f7f7f7;
+            
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        
         }
         .card {
             margin-bottom: 20px;

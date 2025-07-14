@@ -72,7 +72,7 @@ $mesObjets = getObjetsParMembreParCategorie($infos['id_membre']);
     <div class="container mt-5">
         <div class="card mx-auto shadow" style="max-width: 500px;">
             <div class="card-body text-center">
-                <h2 class="card-title mb-4">Modifier</h2>
+                <h2 class="card-title mb-4">Modifier la photo de profil</h2>
 
                 <form action="traitement.php" method="post" enctype="multipart/form-data">
                     <label for="fichier">Choisir un fichier :</label>
