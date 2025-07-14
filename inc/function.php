@@ -101,19 +101,38 @@ function get_categorie(){
     }
     return $cat;
 }
+function insert_new_object($nom, $id_membre, $id_cat) {
+    $conn = dbconnect();
 
-function insert_new_object($nom,$id_membre,$id_cat){
-    $sql = "INSERT INTO emprunt_objet (nom_objet,id_membre,id_categorie)
-    VALUES('%s','%s','%s')";
-    $sql = sprintf($sql,$nom,$id_membre,$id_cat);
-       $result = mysqli_query(dbconnect(), $sql);
+    
+    $sql = "INSERT INTO emprunt_objet (nom_objet, id_membre, id_categorie) VALUES ('%s', %d, %d)";
+    $sql = sprintf($sql, $nom, $id_membre, $id_cat);
+
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        die("Erreur SQL : " . mysqli_error($conn) . " -- Requête: " . $sql);
+    }
+
+   
+    return mysqli_insert_id($conn);
 }
 
-function insert_img($nom,$id_object){
-    $sql  = "INSERT INTO emprunt_image (id_objet,nom_image)
-    VALUES ('%s','%s')";
-$sql = sprintf($sql,$nom,$id_object);
-$result = mysqli_query(dbconnect(), $sql);
+
+function insert_img($nom, $id_objet){
+    $conn = dbconnect();
+    $nom = mysqli_real_escape_string($conn, $nom);
+    $id_objet = (int)$id_objet;
+
+    $sql = "INSERT INTO emprunt_image (id_objet, nom_image) VALUES (%d, '%s')";
+    $sql = sprintf($sql, $id_objet, $nom);
+
+    $result = mysqli_query($conn, $sql);
+    if (!$result) {
+        echo "Erreur insert image : " . mysqli_error($conn);
+        return false;
+    }
+    return true;
 }
 
 
