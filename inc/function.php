@@ -115,6 +115,8 @@ function insert_img($nom,$id_object){
 $sql = sprintf($sql,$nom,$id_object);
 $result = mysqli_query(dbconnect(), $sql);
 }
+
+
 /*function emprunterObjet($id_objet, $id_membre) {
     
     $sql = sprintf("INSERT INTO emprunt_emprunt (id_objet, id_membre, date_emprunt) VALUES (%d, %d, NOW())",
