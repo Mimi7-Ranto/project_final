@@ -1,0 +1,25 @@
+creation de la base fait
+membre  fait
+categorie  fait
+objet   fait
+image  fait
+emprunt  fait
+
+faire les test avec quelques donne  fait+
+
+
+version 1
+creation de la page inscription fait
+    function insert fait
+    trzitement fait
+creation de la page login fait
+    fonction get_info fait
+page liste des objets fait
+    function get objet fait
+filtrer par categorie fait
+
+ajouter une image
+    function get image object 
+    function supprimer image
+    mettre image par defaut
+    
