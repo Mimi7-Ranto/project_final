@@ -104,8 +104,8 @@ $mesObjets = getObjetsParMembreParCategorie($infos['id_membre']);
                         <?php endforeach; ?>
                     </select>
 
-                    <label for="fichier" class="form-label mt-3">Images de l'objet</label>
-                    <input type="file" name="fichier" id="fichier" class="form-control" multiple accept="image/*">
+                    <label for="sary" class="form-label mt-3">Images de l'objet</label>
+                    <input type="file" name="sary" id="fichier" class="form-control" multiple accept="image/*">
 
                     <input type="submit" value="Uploader" class="btn btn-danger mt-4">
                 </form>

@@ -110,7 +110,7 @@ function insert_new_object($nom,$id_membre,$id_cat){
 }
 
 function insert_img($nom,$id_object){
-    $sql  = "INSERT INTO emprunt_image (id_object,nom_image)
+    $sql  = "INSERT INTO emprunt_image (id_objet,nom_image)
     VALUES ('%s','%s')";
 $sql = sprintf($sql,$nom,$id_object);
 $result = mysqli_query(dbconnect(), $sql);

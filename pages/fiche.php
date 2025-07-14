@@ -80,11 +80,11 @@ if (!$objet) {
         <div>
             <h4>Images</h4>
             <?php if (!empty($images)): ?>
-                <img src="../uploads/<?= htmlspecialchars($images[0]['nom_image']) ?>" alt="Image principale"
+                <img src="../assets/image/<?= htmlspecialchars($images[0]['nom_image']) ?>" alt="Image principale"
                     class="main-image">
                 <div class="d-flex flex-wrap">
                     <?php foreach ($images as $img): ?>
-                        <img src="../uploads/<?= htmlspecialchars($img['nom_image']) ?>" alt="Image" class="thumb"
+                        <img src="../assets/image/<?= htmlspecialchars($img['nom_image']) ?>" alt="Image" class="thumb"
                             onclick="document.querySelector('.main-image').src=this.src;">
                     <?php endforeach; ?>
                 </div>

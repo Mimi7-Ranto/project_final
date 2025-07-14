@@ -101,7 +101,7 @@ if (isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])) {
     }
 }
 
-if (isset($_POST['obj'], $_POST['cat'], $_FILES['fichier'])) {
+if (isset($_POST['obj'], $_POST['cat'], $_FILES['sary'])) {
     $nom = $_POST['obj'];
     $id_cat = $_POST['cat'];
     $id_membre = $_SESSION['id_membre'];
@@ -111,7 +111,7 @@ if (isset($_POST['obj'], $_POST['cat'], $_FILES['fichier'])) {
 
     if ($id_objet) {
     
-        foreach ($_FILES['fichier']['tmp_name'] as $index => $tmp_name) {
+        foreach ($_FILES['sary']['tmp_name'] as $index => $tmp_name) {
             $file = [
                 'name'     => $_FILES['fichier']['name'][$index],
                 'type'     => $_FILES['fichier']['type'][$index],
