@@ -46,7 +46,31 @@ $mesObjets = getObjetsParMembreParCategorie($infos['id_membre']);
         </nav>
 
     </header>
-
+    <style>
+        body {
+            
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        
+        }
+        .card {
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+        .status-dispo {
+            color: green;
+            font-weight: bold;
+        }
+        .status-indispo {
+            color: red;
+            font-weight: bold;
+        }
+        .card-img-top {
+            max-height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+    </style>
 <body class="bg-light">
 
     <div class="container mt-5">

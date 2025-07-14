@@ -102,65 +102,38 @@ function get_categorie(){
     return $cat;
 }
 function insert_new_object($nom, $id_membre, $id_cat) {
-    $conn = dbconnect();
-
-    
-    $sql = "INSERT INTO emprunt_objet (nom_objet, id_membre, id_categorie) VALUES ('%s', %d, %d)";
+    $sql = "INSERT INTO emprunt_objet (nom_objet, id_membre, id_categorie)
+            VALUES('%s', '%s', '%s')";
     $sql = sprintf($sql, $nom, $id_membre, $id_cat);
-
-    $result = mysqli_query($conn, $sql);
+    $connexion = dbconnect();
+    $result = mysqli_query($connexion, $sql);
 
     if (!$result) {
-        die("Erreur SQL : " . mysqli_error($conn) . " -- Requête: " . $sql);
-    }
-
-   
-    return mysqli_insert_id($conn);
-}
-
-
-function insert_img($nom, $id_objet){
-    $conn = dbconnect();
-    $nom = mysqli_real_escape_string($conn, $nom);
-    $id_objet = (int)$id_objet;
-
-    $sql = "INSERT INTO emprunt_image (id_objet, nom_image) VALUES (%d, '%s')";
-    $sql = sprintf($sql, $id_objet, $nom);
-
-    $result = mysqli_query($conn, $sql);
-    if (!$result) {
-        echo "Erreur insert image : " . mysqli_error($conn);
+        echo "Erreur SQL : " . mysqli_error($connexion);
         return false;
     }
-    return true;
+
+    return mysqli_insert_id($connexion); // ✅ retourne l'id
 }
 
 
-/*function emprunterObjet($id_objet, $id_membre) {
-    
-    $sql = sprintf("INSERT INTO emprunt_emprunt (id_objet, id_membre, date_emprunt) VALUES (%d, %d, NOW())",
-        $id_objet, $id_membre
-    );
-    return mysqli_query(dbconnect(), $sql);
-}
 
-function retournerObjet($id_objet) {
-    
-    $sql = sprintf("UPDATE emprunt_emprunt SET date_retour = NOW() WHERE id_objet = %d AND date_retour IS NULL", $id_objet);
-    return mysqli_query(dbconnect(), $sql);
-}
+function insert_img($nom_image, $id_objet){
+    $conn = dbconnect();
+    $id_objet = (int)$id_objet; 
+    $nom_image_esc = mysqli_real_escape_string($conn, $nom_image);
 
+    $sql_template = "INSERT INTO emprunt_image (id_objet, nom_image) VALUES (%d, '%s')";
+    $sql = sprintf($sql_template, $id_objet, $nom_image_esc);
 
-function getImagesObjet($id_objet) {
-    
-    $sql = sprintf("SELECT nom_image FROM emprunt_image WHERE id_objet = %d", $id_objet);
-    $result = mysqli_query(dbconnect(), $sql);
-    $images = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $images[] = $row['nom_image'];
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        echo "Erreur insertion image : " . mysqli_error($conn);
     }
-    return $images;
-}*/
+}
+
+
 
 
 function getObjetById($id_objet) {

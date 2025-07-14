@@ -85,7 +85,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'emprunter' && isset($_POST[
     }
 }
 
-if (isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])) {
+if (isset($_POST['obj']) && isset($_POST['cat']) && isset($_FILES['fichier'])) {
     $nom = $_POST['obj'];
     $id_cat = $_POST['cat'];
   
@@ -101,43 +101,38 @@ if (isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])) {
     }
 }
 
-if (isset($_POST['obj'], $_POST['cat'], $_FILES['sary'])) {
+if (isset($_POST['obj'])&& isset($_POST['cat']) && isset($_FILES['sary'])) {
     $nom = $_POST['obj'];
     $id_cat = $_POST['cat'];
     $id_membre = $_SESSION['id_membre'];
-
-
-
-    insert_new_object($nom, $id_membre, $id_cat);
-
-    $id_objet = insert_new_object($nom, $id_membre, $id_cat);
-    var_dump($id_objet);
-
-
-    if ($id_objet) {
-    
-        foreach ($_FILES['sary']['tmp_name'] as $index => $tmp_name) {
-            $file = [
-                'name'     => $_FILES['fichier']['name'][$index],
-                'type'     => $_FILES['fichier']['type'][$index],
-                'tmp_name' => $tmp_name,
-                'error'    => $_FILES['fichier']['error'][$index],
-                'size'     => $_FILES['fichier']['size'][$index],
-            ];
-
-            $upload = uploadImage($file);
-
-            if (isset($upload['success'])) {
-                $nom_image = $upload['filename'];
-               insert_img($nom_image,$id_objet);
-            } else {
-                echo "<p class='text-danger'>Erreur image : {$upload['error']}</p>";
+  $id_objet = insert_new_object($nom, $id_membre, $id_cat);
+  var_dump($id_objet);
+if ($id_objet && isset($_FILES['sary'])) {
+    if (is_array($_FILES['sary']['tmp_name'])) {
+        
+        foreach ($_FILES['sary']['tmp_name'] as $index => $tmpPath) {
+            if ($_FILES['sary']['error'][$index] === UPLOAD_ERR_OK) {
+            
             }
         }
-        header('Location: liste.php');
-        exit;
-    }
+    } else {
+        
+        $tmpPath = $_FILES['sary']['tmp_name'];
+        if ($_FILES['sary']['error'] === UPLOAD_ERR_OK) {
+            $originalName = pathinfo($_FILES['sary']['name'], PATHINFO_FILENAME);
+            $extension = pathinfo($_FILES['sary']['name'], PATHINFO_EXTENSION);
+            $newName = $originalName . '_' . uniqid() . '.' . $extension;
+            $destination = '../assets/image/' . $newName;
 
+            if (move_uploaded_file($tmpPath, $destination)) {
+                insert_img($newName, $id_objet);
+            } else {
+                echo "Erreur move_uploaded_file()";
+            }
+        }
+    }
 }
 
+header('Location: liste.php');
+}
 ?>

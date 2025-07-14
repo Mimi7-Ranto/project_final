@@ -17,9 +17,14 @@ creation de la page login fait
 page liste des objets fait
     function get objet fait
 filtrer par categorie fait
-
+v2
 ajouter une image
     function get image object 
     function supprimer image
     mettre image par defaut
+v3
+    ajouter un formulaire d'emprunt fait
+
+    creer une fonction qui vas faire un update de date retour fait
+    changer si c'est plus dispo fait
     

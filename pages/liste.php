@@ -119,9 +119,9 @@ $objets = getObjets($categorie_id);
                                 <strong>Propriétaire :</strong> <?= htmlspecialchars($obj['proprietaire']) ?><br>
                                 <strong>Statut :</strong>
                                 <?php if (isEmprunte($obj['id_objet'])): ?>
-                                    <span class="status-indispo">Emprunté</span><br>
+                                    <span class="status-indispo">Disponible le</span>
                                     <?php $date_retour = get_date_retour($obj['id_objet']); ?>
-                                    <strong>Date de retour :</strong> <?= $date_retour['date_retour']; ?>
+                                    <?= $date_retour['date_retour']; ?>
                                 <?php else: ?>
                                     <span class="status-dispo">Disponible</span>
 
