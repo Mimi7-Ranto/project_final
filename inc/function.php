@@ -134,5 +134,61 @@ function getImagesObjet($id_objet) {
     return $images;
 }*/
 
+function getObjetById($id_objet) {
+    $sql = "SELECT o.*, c.nom_categorie, m.nom AS proprietaire 
+            FROM emprunt_objet o
+            JOIN emprunt_categorie_objet c ON o.id_categorie = c.id_categorie
+            JOIN emprunt_membre m ON o.id_membre = m.id_membre
+            WHERE o.id_objet = %d";
+    $sql = sprintf($sql, $id_objet);
+    $result = mysqli_query(dbconnect(), $sql);
+    return mysqli_fetch_assoc($result);
+}
+
+function getImagesByObjetId($id_objet) {
+    $sql = "SELECT * FROM emprunt_image WHERE id_objet = %d";
+    $sql = sprintf($sql, $id_objet);
+    $result = mysqli_query(dbconnect(), $sql);
+    $images = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $images[] = $row;
+    }
+    return $images;
+}
+
+function getHistoriqueEmprunts($id_objet) {
+    $sql = "SELECT e.*, m.nom 
+            FROM emprunt_emprunt e
+            JOIN emprunt_membre m ON e.id_membre = m.id_membre
+            WHERE e.id_objet = %d
+            ORDER BY e.date_emprunt DESC";
+    $sql = sprintf($sql, $id_objet);
+    $result = mysqli_query(dbconnect(), $sql);
+    $historique = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $historique[] = $row;
+    }
+    return $historique;
+}
+
+function getObjetsParMembreParCategorie($id_membre) {
+    $sql = "SELECT c.nom_categorie, o.nom_objet
+            FROM emprunt_objet o
+            JOIN emprunt_categorie_objet c ON o.id_categorie = c.id_categorie
+            WHERE o.id_membre = %d
+            ORDER BY c.nom_categorie, o.nom_objet";
+    $sql = sprintf($sql, $id_membre);
+    $result = mysqli_query(dbconnect(), $sql);
+    $objets = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $categorie = $row['nom_categorie'];
+        $objets[$categorie][] = $row['nom_objet'];
+    }
+
+    return $objets;
+}
+
+
 
 ?>
