@@ -189,6 +189,15 @@ function getObjetsParMembreParCategorie($id_membre) {
     return $objets;
 }
 
+function emprunterObjet($id_objet, $id_membre, $date_retour) {
+    $sql = "INSERT INTO emprunt_emprunt (id_membre, id_objet, date_emprunt, date_retour)
+            VALUES (%d, %d, NOW(), '%s')";
+    $sql = sprintf($sql, $id_membre, $id_objet, $date_retour);
+    return mysqli_query(dbconnect(), $sql);
+}
+
+
+
 
 
 ?>

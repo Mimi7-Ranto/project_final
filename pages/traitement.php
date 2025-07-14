@@ -9,67 +9,84 @@ if (isset($_POST['nom']) && isset($_POST['date_naissance']) && isset($_POST['gen
     $email = $_POST['email'];
     $mdp = $_POST['mdp'];
 
-   
-   $result= registerUser($nom, $date_naissance, $genre, $email ,$mdp);
-
+    registerUser($nom, $date_naissance, $genre, $email, $mdp);
     if ($result) {
         header('Location:login.php');
         exit;
     }
-    
-
 }
 
-if(isset($_POST['email']) && isset($_POST['mdp'])){
-    echo 'mety';
-    $mdp = $_POST['mdp'];
+if (isset($_POST['email']) && isset($_POST['mdp']) && !isset($_POST['action'])) {
     $email = $_POST['email'];
-    if(loginUser($email,$mdp)){
+    $mdp = $_POST['mdp'];
+    if (loginUser($email, $mdp)) {
         $_SESSION['email'] = $email;
         header('Location:liste.php');
-    }else{
+    } else {
         header('Location:login.php?error=1');
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])) {
+    $uploadDir = '../assets/image/';
+    $maxSize = 2 * 1024 * 1024;
+    $allowedMimeTypes = ['image/jpeg', 'image/png'];
 
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])){
-    echo 'mety' ;
+    $file = $_FILES['fichier'];
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        die('Erreur lors de l’upload : ' . $file['error']);
+    }
 
-$uploadDir = '../assets/image/';
-$maxSize = 2 * 1024 * 1024 ;
-$allowedMimeTypes = ['image/jpeg', 'image/png'];
+    if ($file['size'] > $maxSize) {
+        die('Le fichier est trop volumineux.');
+    }
 
- if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fichier'])) { 
-    $file = $_FILES['fichier']; 
-if ($file['error'] !== UPLOAD_ERR_OK) { 
-die('Erreur lors de l’upload : ' . $file['error']); 
-    } 
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+    if (!in_array($mime, $allowedMimeTypes)) {
+        die('Type de fichier non autorisé : ' . $mime);
+    }
 
-if ($file['size'] > $maxSize) { 
-die('Le fichier est trop volumineux.');
+    $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $newName = $originalName . '_' . uniqid() . '.' . $extension;
+
+    move_uploaded_file($file['tmp_name'], $uploadDir . $newName);
+    $email = $_SESSION['email'];
+    insert_pdp($newName, $email);
+    header('Location:profil.php?succes=1');
+    exit;
 }
 
-$finfo = finfo_open(FILEINFO_MIME_TYPE); 
-    $mime = finfo_file($finfo, $file['tmp_name']); 
-    finfo_close($finfo); 
-if (!in_array($mime, $allowedMimeTypes)) { 
-die('Type de fichier non autorisé : ' . $mime); 
-    } 
+if (isset($_POST['action']) && $_POST['action'] === 'emprunter' && isset($_POST['id_objet'], $_POST['date_retour'])) {
+    $id_objet = (int) $_POST['id_objet'];
+    $date_retour = $_POST['date_retour'];
 
-    $originalName = pathinfo($file['name'], PATHINFO_FILENAME); 
-$extension = pathinfo($file['name'], PATHINFO_EXTENSION); 
-    $newName = $originalName . '_' . uniqid() . '.' . $extension; 
-    $email =  $_SESSION['email'];
-    insert_pdp($newName , $email);
-header('Location:profil.php?succes=1');
+    if (isset($_SESSION['email'])) {
+        $email = $_SESSION['email'];
+        $infos = get_info($email);
+        $id_membre = $infos['id_membre'];
 
- }
+        if (!isEmprunte($id_objet)) {
+            if (emprunterObjet($id_objet, $id_membre, $date_retour)) {
+                header('Location:liste.php?succes=1');
+            } else {
+                header('Location:liste.php?succes=0');
+            }
+        } else {
+            header('Location:liste.php?succes=0');
+        }
+        exit;
+    } else {
+        header("Location:login.php");
+        exit;
+    }
 }
 
-if(isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])){
+if (isset($_POST['obj']) && isset($_POST['cat']) && isset($_POST['fichier'])) {
     $nom = $_POST['obj'];
-    $id_cat = 
-    insert_new_object();
+    $id_cat = $_POST['cat'];
+  
 }
 ?>
